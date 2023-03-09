@@ -7,8 +7,8 @@ y = np.array([0, 1, 1, 0])
 
 if __name__ == '__main__':
     model = keras.Sequential()
-    model.add(keras.layers.Dense(2, input_dim=2, activation="relu"))
-    model.add(keras.layers.Dense(1, activation="relu"))
+    model.add(keras.layers.Dense(10, input_dim=2, activation="relu"))
+    model.add(keras.layers.Dense(1, activation="sigmoid"))
 
     print(model.summary())
 
