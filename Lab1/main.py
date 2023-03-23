@@ -7,11 +7,7 @@ y = np.array([0, 1, 1, 0])
 
 if __name__ == '__main__':
     model = keras.Sequential()
-<<<<<<< Updated upstream
-    model.add(keras.layers.Dense(10, input_dim=2, activation="relu"))
-=======
     model.add(keras.layers.Dense(15, input_dim=2, activation="relu"))
->>>>>>> Stashed changes
     model.add(keras.layers.Dense(1, activation="sigmoid"))
 
     print(model.summary())
