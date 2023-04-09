@@ -83,19 +83,19 @@ if __name__ == '__main__':
     log = train_model("FeedForward", [10], train, val, test, epochs, batch_size, lr2)
     graph(log.history['loss'], log.history['val_loss'])
 
-    log = train_model("FeedForward", [20], train, val, test, epochs, batch_size, lr)
+    log = train_model("FeedForward", [20], train, val, test, epochs, batch_size, lr2)
     graph(log.history['loss'], log.history['val_loss'])
 
     log = train_model("CascadeForward", [20], train, val, test, epochs, batch_size, lr2)
     graph(log.history['loss'], log.history['val_loss'])
 
-    log = train_model("CascadeForward", [10, 10], train, val, test, epochs, batch_size, lr2)
+    log = train_model("CascadeForward", [10, 10], train, val, test, epochs, batch_size, lr)
     graph(log.history['loss'], log.history['val_loss'])
 
     log = train_model("Elman", [15], train, val, test, epochs, batch_size, lr2)
     graph(log.history['loss'], log.history['val_loss'])
 
-    log = train_model("Elman", [5, 5, 5], train, val, test, epochs, batch_size, lr)
+    log = train_model("Elman", [10, 10, 10], train, val, test, epochs, batch_size, lr2)
     graph(log.history['loss'], log.history['val_loss'])
 
 
