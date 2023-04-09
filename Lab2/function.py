@@ -1,20 +1,16 @@
 import pandas as pd
-import numpy as np
-import random
 from typing import Tuple
-import sys
-
 import numpy as np
-import random
 
 
 def func(x: np.ndarray, y: np.ndarray) -> np.ndarray:
-    sum = x + y
-    sum_square = sum * sum
-    return sum_square
+    x_square = x * x
+    y_square = y * y
+    sum = x_square + y_square
+    return sum
 
 
-def generate_data(path, count, min_val=0, max_val=100):
+def generate_data(path, count, min_val=0, max_val=10):
     x = np.random.rand(count) * (max_val - min_val) + min_val
     y = np.random.rand(count) * (max_val - min_val) + min_val
     result = func(x, y)
