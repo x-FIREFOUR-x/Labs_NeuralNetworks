@@ -18,10 +18,11 @@ def predict_image(model, test_data, count):
         predicted_classes = np.argmax(predictions, axis=1)
 
         for index, img in enumerate(images):
-            plt.imshow(test_images[index])
-            plt.show()
+            img = img.numpy()
             print('Correct =', CLASS_NAMES[correct_classes[index]])
             print('Predicted =', CLASS_NAMES[predicted_classes[index]])
+            plt.imshow(test_images[index])
+            plt.show()
 
             if (index > count):
                 break
