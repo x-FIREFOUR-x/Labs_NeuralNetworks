@@ -1,4 +1,5 @@
-import tensorflow as keras
+from tensorflow import keras
+
 
 def AlexNet_model():
     model = keras.models.Sequential([
