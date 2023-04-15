@@ -1,5 +1,4 @@
 import tensorflow as tf
-from tensorflow import keras
 
 
 def process_images(image, label):
@@ -8,9 +7,7 @@ def process_images(image, label):
     return image, label
 
 
-def get_data():
-    (train_images, train_labels), (test_images, test_labels) = keras.datasets.cifar10.load_data()
-
+def get_data(train_images, train_labels, test_images, test_labels):
     validation_images, validation_labels = train_images[:5000], train_labels[:5000]
     train_images, train_labels = train_images[5000:], train_labels[5000:]
 
