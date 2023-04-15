@@ -45,8 +45,6 @@ def train_model(train_ds, validation_ds, test_ds, epochs, batch_size):
                   metrics=['accuracy'],
                   optimizer=tf.keras.optimizers.SGD(learning_rate=learning_rate))
 
-
-
     model.fit(
         train_ds,
         epochs=epochs,
