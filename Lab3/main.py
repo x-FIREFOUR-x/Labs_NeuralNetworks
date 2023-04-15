@@ -37,11 +37,12 @@ def train_model(hidden_neurons, x_train, y_train, x_test, y_test, epochs, batch_
 
 
 def predict_model(model, x, y):
-    plot = plt.imshow(x)
-    plt.show()
     predictions = model.predict(np.expand_dims(x, axis=0), verbose=0)
     print('Correct: ', y)
     print('Predicted: ', predictions.argmax())
+    plot = plt.imshow(x)
+    plt.show()
+
 
 
 if __name__ == '__main__':
@@ -49,4 +50,7 @@ if __name__ == '__main__':
     model = train_model([75, 75, 75], x_train, y_train, x_test, y_test, 20, 100)
     model.evaluate(x_test, y_test)
     predict_model(model, x_test[0], y_test[0])
+    predict_model(model, x_test[9], y_test[9])
+    predict_model(model, x_test[19], y_test[19])
+    predict_model(model, x_test[47], y_test[47])
 
