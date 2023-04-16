@@ -40,7 +40,8 @@ def train_model(train_ds, validation_ds, test_ds, epochs, batch_size):
 
 
 if __name__ == '__main__':
-    dataset = Dataset(data_path=DATASET_PATH, batch_size=BATCH_SIZE, val_percent=0.2, test_percent=0.1)
+    dataset = Dataset(data_path=DATASET_PATH, batch_size=BATCH_SIZE, val_percent=0.15, test_percent=0.1)
 
     preprocessingData = PreprocessingData(CLASSES_NAMES, IMAGE_HEIGHT, IMAGE_WIDTH)
-    (train_ds, val_ds, test_ds) = dataset.create_data_pipelines(preprocessingData)
+    (train_ds, validation_ds, test_ds) = dataset.create_data_pipelines(preprocessingData)
+    model = train_model(train_ds, validation_ds, test_ds, 1, BATCH_SIZE)
