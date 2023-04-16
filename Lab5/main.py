@@ -3,8 +3,14 @@ import tensorflow as tf
 from model import InceptionV3
 
 
+IMAGE_HEIGHT = 299
+IMAGE_WIDTH = 299
+
+CLASS_NAMES = ["GermanShepherd", "Others"]
+
+
 def train_model(train_ds, validation_ds, test_ds, epochs, batch_size):
-    model = InceptionV3()
+    model = InceptionV3((IMAGE_HEIGHT, IMAGE_WIDTH, 3), len(CLASS_NAMES))
 
     initial_learning_rate = 10 ** (-3)
     final_learning_rate = 10 ** (-7)

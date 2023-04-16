@@ -1,0 +1,9 @@
+IMAGE_HEIGHT = 299
+IMAGE_WIDTH = 299
+
+RECOGNIZE_CLASS = ['GermanShepherd']
+OTHERS_CLASSES = 'Others'
+
+DATA_PATH = 'Data'
+ORIGIN_DATA_PATH = DATA_PATH + '/origin'
+DATASET_PATH = DATA_PATH + '/dataset'
