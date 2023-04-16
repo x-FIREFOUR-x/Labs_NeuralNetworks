@@ -1,16 +1,14 @@
 import tensorflow as tf
 
 from model import InceptionV3
+from processingData.preprocessingData import PreprocessingData
+from processingData.dataset import Dataset
 
-
-IMAGE_HEIGHT = 299
-IMAGE_WIDTH = 299
-
-CLASS_NAMES = ["GermanShepherd", "Others"]
+from arguments import DATASET_PATH, BATCH_SIZE, IMAGE_HEIGHT, IMAGE_WIDTH, CLASSES_NAMES
 
 
 def train_model(train_ds, validation_ds, test_ds, epochs, batch_size):
-    model = InceptionV3((IMAGE_HEIGHT, IMAGE_WIDTH, 3), len(CLASS_NAMES))
+    model = InceptionV3((IMAGE_HEIGHT, IMAGE_WIDTH, 3), len(CLASSES_NAMES))
 
     initial_learning_rate = 10 ** (-3)
     final_learning_rate = 10 ** (-7)
@@ -42,4 +40,7 @@ def train_model(train_ds, validation_ds, test_ds, epochs, batch_size):
 
 
 if __name__ == '__main__':
-    print('Hello')
+    dataset = Dataset(data_path=DATASET_PATH, batch_size=BATCH_SIZE, val_percent=0.2, test_percent=0.1)
+
+    preprocessingData = PreprocessingData(CLASSES_NAMES, IMAGE_HEIGHT, IMAGE_WIDTH)
+    (train_ds, val_ds, test_ds) = dataset.create_data_pipelines(preprocessingData)

@@ -4,7 +4,7 @@ import os
 import shutil
 import random
 
-from arguments import DATASET_PATH, ORIGIN_DATA_PATH, IMAGE_HEIGHT, IMAGE_WIDTH, OTHERS_CLASSES, RECOGNIZE_CLASS
+from arguments import DATASET_PATH, ORIGIN_DATA_PATH, IMAGE_HEIGHT, IMAGE_WIDTH, OTHER_CLASS, CLASSES_NAMES
 
 COUNT_FILES = 150
 IMAGE_KERNEL = 11
@@ -91,7 +91,7 @@ def crop(img):
 
 
 def combine_with_others(img):
-    files = glob.glob(ORIGIN_DATA_PATH + "/" + OTHERS_CLASSES + "/*.jpg")
+    files = glob.glob(ORIGIN_DATA_PATH + "/" + OTHER_CLASS + "/*.jpg")
     files_count = len(files)
     rand_file = random.randint(0, files_count - 1)
     name = os.path.split(files[rand_file])[-1]
@@ -143,7 +143,7 @@ def generate_dataset(num, input_folder, output_folder):
 
 
 if __name__ == '__main__':
-    for Class in RECOGNIZE_CLASS:
+    for Class in CLASSES_NAMES:
         input_folder = ORIGIN_DATA_PATH + "/" + Class
         output_folder = DATASET_PATH + "/" + Class
         if os.path.isdir(output_folder):
@@ -151,11 +151,3 @@ if __name__ == '__main__':
         os.mkdir(output_folder)
 
         generate_dataset(COUNT_FILES, input_folder, output_folder)
-
-    input_folder = ORIGIN_DATA_PATH + "/" + OTHERS_CLASSES
-    output_folder = DATASET_PATH + "/" + OTHERS_CLASSES
-    if os.path.isdir(output_folder):
-        shutil.rmtree(output_folder)
-    os.mkdir(output_folder)
-
-    generate_dataset(COUNT_FILES, input_folder, output_folder)
