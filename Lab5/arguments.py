@@ -8,4 +8,4 @@ DATA_PATH = 'Data'
 ORIGIN_DATA_PATH = DATA_PATH + '/origin'
 DATASET_PATH = DATA_PATH + '/dataset'
 
-BATCH_SIZE = 3
+BATCH_SIZE = 1

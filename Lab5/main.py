@@ -1,4 +1,6 @@
 import tensorflow as tf
+import matplotlib.pyplot as plt
+import numpy as np
 
 from model import InceptionV3
 from processingData.preprocessingData import PreprocessingData
@@ -38,10 +40,45 @@ def train_model(train_ds, validation_ds, test_ds, epochs, batch_size):
 
     return model
 
+def predict_image(model, test_data, count):
+    plt.figure(figsize=(4, 4))
+    for (images,  correct_classes) in test_data.take(count):
+        correct_classes = correct_classes.numpy()
+        predictions = model.predict(images)[1]
+        predicted_classes = np.argmax(predictions, axis=1)
+
+        for index, img in enumerate(images):
+            img = img.numpy()
+            print('Correct =', CLASSES_NAMES[correct_classes[index]])
+            print('Predicted =', CLASSES_NAMES[predicted_classes[index]])
+            plt.imshow(images[index].numpy().astype('uint8'))
+            plt.show()
+            if (index > count):
+                break
+
+
+def recignize_image(model, preprocessingData, path):
+    img = preprocessingData.process_single_img(path)
+    predictions = model.predict(tf.expand_dims(img, axis = 0))[0]
+    classes = np.argmax(predictions, axis=1).squeeze()
+    print(CLASSES_NAMES[classes])
+    plt.imshow(img.numpy().astype('uint8'))
+    plt.show()
+
 
 if __name__ == '__main__':
     dataset = Dataset(data_path=DATASET_PATH, batch_size=BATCH_SIZE, val_percent=0.15, test_percent=0.1)
 
     preprocessingData = PreprocessingData(CLASSES_NAMES, IMAGE_HEIGHT, IMAGE_WIDTH)
     (train_ds, validation_ds, test_ds) = dataset.create_data_pipelines(preprocessingData)
+
+    print(tf.data.experimental.cardinality(train_ds).numpy())
+    print(tf.data.experimental.cardinality(validation_ds).numpy())
+    print(tf.data.experimental.cardinality(test_ds).numpy())
+
     model = train_model(train_ds, validation_ds, test_ds, 1, BATCH_SIZE)
+
+    predict_image(model, test_ds, 10)
+
+    recignize_image(model, preprocessingData, "Data\\origin\\GermanShepherd\\02.jpg")
+    recignize_image(model, preprocessingData, "Data\\origin\\Others\\02.jpg")

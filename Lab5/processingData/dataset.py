@@ -25,7 +25,7 @@ class Dataset:
 
     def create_train_pipeline(self, ds, preprocessor):
         image_count = len(ds)
-        ds = ds.map(preprocessor.process_path, num_parallel_calls=tf.data.AUTOTUNE)\
+        ds = ds.shuffle(buffer_size = image_count, reshuffle_each_iteration=True).map(preprocessor.process_path, num_parallel_calls=tf.data.AUTOTUNE)\
             .batch(batch_size=self.batch_size)
         return ds
 
