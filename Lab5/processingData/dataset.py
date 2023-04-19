@@ -13,6 +13,7 @@ class Dataset:
     def load_data(self, path, val_percent, test_percent):
         data_dir = pathlib.Path(path)
         data_ds = tf.data.Dataset.list_files(str(data_dir / '*/*'), shuffle=False)
+        data_ds = data_ds.shuffle(buffer_size=len(data_ds), reshuffle_each_iteration=False)
         image_count = len(data_ds)
         val_size = int(image_count * val_percent)
         test_size = int(image_count * test_percent)
@@ -24,8 +25,7 @@ class Dataset:
         return (train_ds, val_ds, test_ds)
 
     def create_train_pipeline(self, ds, preprocessor):
-        image_count = len(ds)
-        ds = ds.shuffle(buffer_size = image_count, reshuffle_each_iteration=True).map(preprocessor.process_path, num_parallel_calls=tf.data.AUTOTUNE)\
+        ds = ds.map(preprocessor.process_path, num_parallel_calls=tf.data.AUTOTUNE)\
             .batch(batch_size=self.batch_size)
         return ds
 

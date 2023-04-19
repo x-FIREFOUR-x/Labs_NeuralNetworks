@@ -147,7 +147,7 @@ def InceptionV3(input_size, output_size):
     x = Dense(2048, activation='relu')(x)
     x = Dropout(0.2)(x)
 
-    x = Dense(output_size, activation='softmax', name='output')(x)
+    x = Dense(output_size, activation='sigmoid', name='output')(x)
 
     model = Model(input_layer, [x, Aux])
 

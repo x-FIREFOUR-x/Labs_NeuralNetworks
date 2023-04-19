@@ -1,16 +1,17 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
+from keras.callbacks import ModelCheckpoint
 
 from model import InceptionV3
 from processingData.preprocessingData import PreprocessingData
 from processingData.dataset import Dataset
 
-from arguments import DATASET_PATH, BATCH_SIZE, IMAGE_HEIGHT, IMAGE_WIDTH, CLASSES_NAMES
+from arguments import DATASET_PATH, BATCH_SIZE, IMAGE_HEIGHT, IMAGE_WIDTH, CLASSES_NAMES, PATH_SAVE_MODEL
 
 
 def train_model(train_ds, validation_ds, test_ds, epochs, batch_size):
-    model = InceptionV3((IMAGE_HEIGHT, IMAGE_WIDTH, 3), len(CLASSES_NAMES))
+    model = InceptionV3((IMAGE_HEIGHT, IMAGE_WIDTH, 3), len(CLASSES_NAMES)-1)
 
     initial_learning_rate = 10 ** (-3)
     final_learning_rate = 10 ** (-7)
@@ -23,20 +24,39 @@ def train_model(train_ds, validation_ds, test_ds, epochs, batch_size):
         decay_rate=learning_rate_decay_factor
     )
 
-    model.compile(loss='sparse_categorical_crossentropy',
+    model.compile(loss='binary_crossentropy', #loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'],
                   optimizer=tf.keras.optimizers.SGD(learning_rate=learning_rate))
 
     model.summary()
+
+    checkpoint_dir = PATH_SAVE_MODEL + "/Checkpoints/"
+    checkpoint_path = checkpoint_dir + "cp-{epoch:04d}.ckpt"
+    checkpoint = ModelCheckpoint(filepath=checkpoint_path,
+                                 monitor='val_loss',
+                                 verbose=1,
+                                 save_weights_only=True,
+                                 mode='auto')
+
+    tf_path = PATH_SAVE_MODEL + "/Model/"
+    fullModelSave = ModelCheckpoint(filepath=tf_path,
+                                    monitor='val_loss',
+                                    verbose=1,
+                                    save_best_only=True,
+                                    mode='auto')
+
+    log_dir = PATH_SAVE_MODEL + "/Logs/"
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
+
+    callbacks_list = [checkpoint, tensorboard_callback, fullModelSave]
 
     model.fit(
         train_ds,
         epochs=epochs,
         batch_size=batch_size,
         validation_data=validation_ds,
+        callbacks=callbacks_list,
         verbose=1)
-
-    model.evaluate(test_ds)
 
     return model
 
@@ -76,9 +96,17 @@ if __name__ == '__main__':
     print(tf.data.experimental.cardinality(validation_ds).numpy())
     print(tf.data.experimental.cardinality(test_ds).numpy())
 
-    model = train_model(train_ds, validation_ds, test_ds, 1, BATCH_SIZE)
+    model = train_model(train_ds, validation_ds, test_ds, 15, BATCH_SIZE)
+    #model = tf.keras.models.load_model('SaveModelModel')
+
+    model.evaluate(test_ds)
 
     predict_image(model, test_ds, 10)
 
-    recignize_image(model, preprocessingData, "Data\\origin\\GermanShepherd\\02.jpg")
-    recignize_image(model, preprocessingData, "Data\\origin\\Others\\02.jpg")
+
+    recignize_image(model, preprocessingData, "Data\\test\\01.jpg")
+    recignize_image(model, preprocessingData, "Data\\test\\02.jpg")
+    recignize_image(model, preprocessingData, "Data\\test\\03.jpg")
+    recignize_image(model, preprocessingData, "Data\\test\\04.jpg")
+    recignize_image(model, preprocessingData, "Data\\test\\05.jpg")
+    recignize_image(model, preprocessingData, "Data\\test\\06.jpg")

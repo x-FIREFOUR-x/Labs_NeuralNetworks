@@ -1,11 +1,13 @@
 IMAGE_HEIGHT = 299
 IMAGE_WIDTH = 299
 
-CLASSES_NAMES = ["GermanShepherd", "Others"]
+CLASSES_NAMES = ["Others", "GermanShepherd"]
 OTHER_CLASS = 'Others'
 
 DATA_PATH = 'Data'
 ORIGIN_DATA_PATH = DATA_PATH + '/origin'
 DATASET_PATH = DATA_PATH + '/dataset'
 
-BATCH_SIZE = 1
+BATCH_SIZE = 6
+
+PATH_SAVE_MODEL = 'SaveModel'
