@@ -1,4 +1,3 @@
-import tensorflow as tf
 from keras import Model
 from keras.layers import Conv2D, Activation, BatchNormalization, MaxPool2D, Input, GlobalAveragePooling2D,\
     AveragePooling2D, Dense, Dropout, Flatten, concatenate

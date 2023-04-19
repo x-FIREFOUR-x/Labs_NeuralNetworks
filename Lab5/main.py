@@ -73,8 +73,7 @@ def predict_image(model, test_data, count):
             print('Predicted =', CLASSES_NAMES[predicted_classes[index]])
             plt.imshow(images[index].numpy().astype('uint8'))
             plt.show()
-            if (index > count):
-                break
+            break
 
 
 def recignize_image(model, preprocessingData, path):
@@ -96,13 +95,12 @@ if __name__ == '__main__':
     print(tf.data.experimental.cardinality(validation_ds).numpy())
     print(tf.data.experimental.cardinality(test_ds).numpy())
 
-    model = train_model(train_ds, validation_ds, test_ds, 15, BATCH_SIZE)
-    #model = tf.keras.models.load_model('SaveModelModel')
+    #model = train_model(train_ds, validation_ds, test_ds, 15, BATCH_SIZE)
+    model = tf.keras.models.load_model('SaveModel/Model')
 
     model.evaluate(test_ds)
 
     predict_image(model, test_ds, 10)
-
 
     recignize_image(model, preprocessingData, "Data\\test\\01.jpg")
     recignize_image(model, preprocessingData, "Data\\test\\02.jpg")
