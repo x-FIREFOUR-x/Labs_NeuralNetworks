@@ -129,7 +129,7 @@ def generate_dataset(num, input_folder, output_folder):
 
     generated_files = set()
     operations = [blur, rotate90, rotate180, rotate270, flip_vertical, flip_horizontal,
-                  grayscale, shift_x, shift_y, crop, combine_with_others]
+                  grayscale, shift_x, shift_y, crop]
     while len(generated_files) < num:
         rand_file = random.randint(0, len(init_files) - 1)
         img = cv2.imread(init_files[rand_file])

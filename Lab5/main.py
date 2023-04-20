@@ -7,7 +7,7 @@ from model import InceptionV3
 from processingData.preprocessingData import PreprocessingData
 from processingData.dataset import Dataset
 
-from arguments import DATASET_PATH, BATCH_SIZE, IMAGE_HEIGHT, IMAGE_WIDTH, CLASSES_NAMES, PATH_SAVE_MODEL
+from arguments import DATASET_PATH, BATCH_SIZE, IMAGE_HEIGHT, IMAGE_WIDTH, CLASSES_NAMES, PATH_SAVE_MODEL, EPOCHS
 
 
 def train_model(train_ds, validation_ds, test_ds, epochs, batch_size):
@@ -95,8 +95,8 @@ if __name__ == '__main__':
     print(tf.data.experimental.cardinality(validation_ds).numpy())
     print(tf.data.experimental.cardinality(test_ds).numpy())
 
-    #model = train_model(train_ds, validation_ds, test_ds, 15, BATCH_SIZE)
-    model = tf.keras.models.load_model('SaveModel/Model')
+    model = train_model(train_ds, validation_ds, test_ds, EPOCHS, BATCH_SIZE)
+    #model = tf.keras.models.load_model('SaveModel/Model')
 
     model.evaluate(test_ds)
 
