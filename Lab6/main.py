@@ -1,6 +1,7 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
+import cv2
 from keras.callbacks import ModelCheckpoint
 
 from model import Xception
@@ -76,13 +77,55 @@ def predict_image(model, test_data, count):
             break
 
 
-def recignize_image(model, preprocessingData, path):
+def recognize_image(model, preprocessingData, path):
     img = preprocessingData.process_single_img(path)
     predictions = model.predict(tf.expand_dims(img, axis = 0))[0]
     classes = np.argmax(predictions, axis=1).squeeze()
     print(CLASSES_NAMES[classes])
     plt.imshow(img.numpy().astype('uint8'))
     plt.show()
+
+def recognize_video(model, preprocessingData, path):
+    video = cv2.VideoCapture('Data/samsung.mp4')
+    frame_no = 0
+    last_predictions = []
+    last_result = False
+    begin_time = []
+    end_time = []
+    while video.isOpened():
+        ret, frame = video.read()
+        if (ret):
+            frame_no += 1
+            if (frame_no % 4 != 0):
+                continue
+
+            process_frame = preprocessingData.preprocess_opencv_img(frame)
+            process_frame = np.expand_dims(process_frame, axis=0)
+            predictions = model.predict(process_frame, verbose=0)
+            pred_class = predictions[0]
+            last_predictions.append(pred_class)
+            if (len(last_predictions) > 3):
+                last_predictions.pop(0)
+            avg_prediction = sum(last_predictions) / len(last_predictions)
+            if (avg_prediction > 0.5 and not last_result):
+                last_result = True
+                time = video.get(cv2.CAP_PROP_POS_MSEC) / 1000
+                print("Start =", time)
+                begin_time.append(time)
+
+            if (avg_prediction < 0.5 and last_result):
+                last_result = False
+                time = video.get(cv2.CAP_PROP_POS_MSEC) / 1000
+                print("End =", time)
+                begin_time.append(time)
+
+            cv2.imshow('frame', frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                cv2.destroyAllWindows()
+                break
+        else:
+            cv2.destroyAllWindows()
+            break
 
 
 if __name__ == '__main__':
@@ -102,9 +145,12 @@ if __name__ == '__main__':
 
     predict_image(model, test_ds, 10)
 
-    recignize_image(model, preprocessingData, "Data\\test\\01.jpg")
-    recignize_image(model, preprocessingData, "Data\\test\\02.jpg")
-    recignize_image(model, preprocessingData, "Data\\test\\03.jpg")
-    recignize_image(model, preprocessingData, "Data\\test\\04.jpg")
-    recignize_image(model, preprocessingData, "Data\\test\\05.jpg")
-    recignize_image(model, preprocessingData, "Data\\test\\06.jpg")
+    recognize_image(model, preprocessingData, "Data\\test\\01.jpg")
+    recognize_image(model, preprocessingData, "Data\\test\\02.jpg")
+    recognize_image(model, preprocessingData, "Data\\test\\03.jpg")
+    recognize_image(model, preprocessingData, "Data\\test\\04.jpg")
+    recognize_image(model, preprocessingData, "Data\\test\\05.jpg")
+    recognize_image(model, preprocessingData, "Data\\test\\06.jpg")
+    recognize_image(model, preprocessingData, "Data\\test\\07.jpg")
+
+    recognize_video(model, preprocessingData, "Data\\test\\video.mp4")
