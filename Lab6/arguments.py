@@ -9,6 +9,6 @@ ORIGIN_DATA_PATH = DATA_PATH + '/origin'
 DATASET_PATH = DATA_PATH + '/dataset'
 
 BATCH_SIZE = 2
-EPOCHS = 20
+EPOCHS = 15
 
 PATH_SAVE_MODEL = 'SaveModel'

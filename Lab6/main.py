@@ -66,12 +66,12 @@ def predict_image(model, test_data, count):
     for (images,  correct_classes) in test_data.take(count):
         correct_classes = correct_classes.numpy()
         predictions = model.predict(images)[1]
-        predicted_classes = np.argmax(predictions, axis=1)
+        predicted_classes = np.argmax(predictions)
 
         for index, img in enumerate(images):
             img = img.numpy()
             print('Correct =', CLASSES_NAMES[correct_classes[index]])
-            print('Predicted =', CLASSES_NAMES[predicted_classes[index]])
+            print('Predicted =', CLASSES_NAMES[predicted_classes])
             plt.imshow(images[index].numpy().astype('uint8'))
             plt.show()
             break
@@ -80,13 +80,13 @@ def predict_image(model, test_data, count):
 def recognize_image(model, preprocessingData, path):
     img = preprocessingData.process_single_img(path)
     predictions = model.predict(tf.expand_dims(img, axis = 0))[0]
-    classes = np.argmax(predictions, axis=1).squeeze()
+    classes = np.argmax(predictions).squeeze()
     print(CLASSES_NAMES[classes])
     plt.imshow(img.numpy().astype('uint8'))
     plt.show()
 
 def recognize_video(model, preprocessingData, path):
-    video = cv2.VideoCapture('Data/samsung.mp4')
+    video = cv2.VideoCapture(path)
     frame_no = 0
     last_predictions = []
     last_result = False
