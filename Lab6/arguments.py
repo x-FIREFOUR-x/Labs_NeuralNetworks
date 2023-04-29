@@ -1,7 +1,7 @@
 IMAGE_HEIGHT = 299
 IMAGE_WIDTH = 299
 
-CLASSES_NAMES = ["Others", ""]
+CLASSES_NAMES = ["Others", "Lamborghini"]
 OTHER_CLASS = 'Others'
 
 DATA_PATH = 'Data'
