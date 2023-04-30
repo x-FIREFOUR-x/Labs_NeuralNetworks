@@ -107,7 +107,7 @@ def recognize_video(model, preprocessingData, path):
             if (len(last_predictions) > 3):
                 last_predictions.pop(0)
             avg_prediction = sum(last_predictions) / len(last_predictions)
-            if (avg_prediction > 0.5 and not last_result):
+            if (avg_prediction < 0.5 and not last_result):
                 last_result = True
                 time = video.get(cv2.CAP_PROP_POS_MSEC) / 1000
                 print("Start =", time)
@@ -138,8 +138,8 @@ if __name__ == '__main__':
     print(tf.data.experimental.cardinality(validation_ds).numpy())
     print(tf.data.experimental.cardinality(test_ds).numpy())
 
-    model = train_model(train_ds, validation_ds, test_ds, EPOCHS, BATCH_SIZE)
-    #model = tf.keras.models.load_model('SaveModel/Model')
+    #model = train_model(train_ds, validation_ds, test_ds, EPOCHS, BATCH_SIZE)
+    model = tf.keras.models.load_model('SaveModel/Model')
 
     model.evaluate(test_ds)
 
